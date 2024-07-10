@@ -410,7 +410,7 @@ export default definePlugin({
 
         if (settings.store.allActivitiesStyle === "carousel") {
             return (
-                <div className={cl("temp-fix")} style={{ display: "flex", flexDirection: "column" }}>
+                <div style={{ display: "flex", flexDirection: "column" }}>
                     <ActivityView
                         type={ActivityViewType.USER_POPOUT_V2}
                         activity={currentActivity}
@@ -479,7 +479,6 @@ export default definePlugin({
         } else {
             return (
                 <div
-                    className={cl("temp-fix")}
                     style={{
                         display: "flex",
                         flexDirection: "column",
