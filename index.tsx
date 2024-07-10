@@ -13,7 +13,7 @@ import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
 import { findByPropsLazy, findComponentByCodeLazy, findStoreLazy } from "@webpack";
 import { moment, PresenceStore, React, Tooltip, useMemo, useStateFromStores } from "@webpack/common";
-import { Guild, User } from "discord-types/general";
+import { User } from "discord-types/general";
 
 import { Caret } from "./components/Caret";
 import { SpotifyIcon } from "./components/SpotifyIcon";
@@ -105,25 +105,10 @@ const TimeBar = findComponentByCodeLazy<{
     className: string;
 }>("isSingleLine");
 
-enum ActivityViewType {
-    USER_POPOUT = "UserPopout",
-    USER_POPOUT_V2 = "UserPopoutV2",
-    ACTIVITY_FEED = "ActivityFeed",
-    PROFILE = "Profile",
-    PROFILE_V2 = "ProfileV2",
-    STREAM_PREVIEW = "StreamPreview",
-    VOICE_CHANNEL = "VoiceChannel",
-    SIMPLIFIED_PROFILE = "SimplifiedProfile",
-    BITE_SIZE_POPOUT = "BiteSizePopout"
-}
-
 const ActivityView = findComponentByCodeLazy<{
     activity: Activity | null;
     user: User;
-    activityGuild: Guild;
-    type: ActivityViewType;
-    showChannelDetails: boolean;
-        }>(",onOpenGameProfileModal:");
+}>(",onOpenGameProfileModal:");
 
 // if discord one day decides to change their icon this needs to be updated
 const DefaultActivityIcon = findComponentByCodeLazy("M6,7 L2,7 L2,6 L6,6 L6,7 Z M8,5 L2,5 L2,4 L8,4 L8,5 Z M8,3 L2,3 L2,2 L8,2 L8,3 Z M8.88888889,0 L1.11111111,0 C0.494444444,0 0,0.494444444 0,1.11111111 L0,8.88888889 C0,9.50253861 0.497461389,10 1.11111111,10 L8.88888889,10 C9.50253861,10 10,9.50253861 10,8.88888889 L10,1.11111111 C10,0.494444444 9.5,0 8.88888889,0 Z");
@@ -387,7 +372,7 @@ export default definePlugin({
         return null;
     },
 
-    showAllActivitiesComponent({ activity, user, activityGuild }: Readonly<{ activity: Activity; user: User; activityGuild: Guild; }>) {
+    showAllActivitiesComponent({ activity, user, ...props }: Readonly<{ activity: Activity; user: User; }>) {
         const [currentActivity, setCurrentActivity] = React.useState<Activity | null>(
             activity?.type !== 4 ? activity! : null
         );
@@ -412,11 +397,10 @@ export default definePlugin({
             return (
                 <div style={{ display: "flex", flexDirection: "column" }}>
                     <ActivityView
-                        type={ActivityViewType.USER_POPOUT_V2}
                         activity={currentActivity}
                         user={user}
-                        activityGuild={activityGuild}
-                        showChannelDetails={true}/>
+                        {...props}
+                    />
                     {activities.length > 1 &&
                         <div
                             className={cl("controls")}
@@ -488,11 +472,9 @@ export default definePlugin({
                     {activities.map((activity, index) => (
                         <ActivityView
                             key={index}
-                            type={ActivityViewType.USER_POPOUT_V2}
                             activity={activity}
                             user={user}
-                            activityGuild={activityGuild}
-                            showChannelDetails={true}
+                            {...props}
                         />
                     ))}
                 </div>
