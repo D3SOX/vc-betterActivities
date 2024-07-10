@@ -253,7 +253,7 @@ function getApplicationIcons(activities: Activity[], preferSmall = false) {
                     fetchedApplications.set(application_id, null);
                     fetchApplication(application_id).then(app => {
                         fetchedApplications.set(application_id, app);
-                    });
+                    }).catch(console.error);
                 }
             }
 
@@ -272,14 +272,17 @@ function getApplicationIcons(activities: Activity[], preferSmall = false) {
                         application
                     });
                 }
-            }
-        } else {
-            if (platform === "xbox") {
+            } else if (platform === "xbox") {
                 applicationIcons.push({
                     image: { src: xboxUrl, alt: "Xbox" },
                     activity
                 });
             }
+        } else if (platform === "xbox") {
+            applicationIcons.push({
+                image: { src: xboxUrl, alt: "Xbox" },
+                activity
+            });
         }
     }
 
