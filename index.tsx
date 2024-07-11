@@ -499,8 +499,8 @@ export default definePlugin({
             // Show all activities in the user popout/sidebar
             find: '"UserActivityContainer"',
             replacement: {
-                match: /(?<=\(0,\i\.jsx\)\()\i\.\i(?=,{...\i,activity:\i,user:\i,application:\i)/,
-                replace: "$self.showAllActivitiesComponent"
+                match: /(?<=\(0,\i\.jsx\)\()(\i\.\i)(?=,{...(\i),activity:\i,user:\i,application:\i)/,
+                replace: "$2.type==='BiteSizePopout'?$self.showAllActivitiesComponent:$1"
             },
             predicate: () => settings.store.userPopout
         },
