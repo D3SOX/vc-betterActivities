@@ -12,7 +12,7 @@ import ErrorBoundary from "@components/ErrorBoundary";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
 import { findByPropsLazy, findComponentByCodeLazy, findStoreLazy } from "@webpack";
-import { moment, PresenceStore, React, Tooltip, useMemo, useStateFromStores } from "@webpack/common";
+import { moment, PresenceStore, React, Tooltip, useEffect, useMemo, useState, useStateFromStores } from "@webpack/common";
 import { User } from "discord-types/general";
 
 import { Caret } from "./components/Caret";
@@ -158,10 +158,24 @@ const customFormat = (momentObj: moment.Moment): string => {
     return hours > 0 ? `${momentObj.format("HH:")}${formattedTime}` : formattedTime;
 };
 
-function formatElapsedTime(startTime: moment.Moment, endTime: moment.Moment): string {
-    const duration = moment.duration(endTime.diff(startTime));
-    return `${customFormat(moment.utc(duration.asMilliseconds()))} elapsed`;
-}
+const Timer = ({ startTime, endTime }: Readonly<{ startTime: moment.Moment, endTime: moment.Moment; }>) => {
+    const [time, setTime] = useState(endTime.diff(startTime));
+
+    useEffect(() => {
+        const ms = 1000 - (time % 1000);
+        const interval = setTimeout(() => {
+            setTime(prevTime => prevTime + ms);
+        }, ms);
+
+        return () => clearTimeout(interval);
+    });
+
+    return (
+        <div className={cl("activity-time-bar")}>
+            {`${customFormat(moment.utc(time))} elapsed`}
+        </div>
+    );
+};
 
 const ActivityTooltip = ({ activity, application, user }: Readonly<{ activity: Activity, application?: Application, user: User; }>) => {
     const image = useMemo(() => {
@@ -187,9 +201,10 @@ const ActivityTooltip = ({ activity, application, user }: Readonly<{ activity: A
                     <div>{activity.state}</div>
                     {settings.store.showAppDescriptions && application?.description && <div>{application.description}</div>}
                     {!timestamps && startTime &&
-                        <div className={cl("activity-time-bar")}>
-                            {formatElapsedTime(moment(startTime), moment())}
-                        </div>
+                        <Timer
+                            startTime={moment(startTime)}
+                            endTime={moment()}
+                        />
                     }
                 </div>
                 {timestamps && <TimeBar start={timestamps.start} end={timestamps.end} themed={false} className={cl("activity-time-bar")} />}
