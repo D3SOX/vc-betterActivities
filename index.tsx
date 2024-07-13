@@ -62,7 +62,7 @@ const settings = definePluginSettings({
                 borderTop: "thin solid var(--background-modifier-accent)",
                 paddingTop: 5,
                 paddingBottom: 5
-            }}/>
+            }} />
         ),
     },
     userPopout: {
@@ -428,7 +428,7 @@ export default definePlugin({
                                 >
                                     <Caret
                                         disabled={activities.indexOf(currentActivity!) < 1}
-                                        direction="left"/>
+                                        direction="left" />
                                 </span>;
                             }}</Tooltip>
 
@@ -437,7 +437,7 @@ export default definePlugin({
                                     <div
                                         key={"dot--" + index}
                                         onClick={() => setCurrentActivity(activity)}
-                                        className={`dot ${currentActivity === activity ? "selected" : ""}`}/>
+                                        className={`dot ${currentActivity === activity ? "selected" : ""}`} />
                                 ))}
                             </div>
 
@@ -456,7 +456,7 @@ export default definePlugin({
                                 >
                                     <Caret
                                         disabled={activities.indexOf(currentActivity!) >= activities.length - 1}
-                                        direction="right"/>
+                                        direction="right" />
                                 </span>;
                             }}</Tooltip>
                         </div>
