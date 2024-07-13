@@ -147,7 +147,7 @@ function getValidTimestamps(activity: Activity): Required<Timestamp> | null {
 
 function getValidStartTimeStamp(activity: Activity): number | null {
     if (activity.timestamps?.start !== undefined) {
-        return activity.timestamps.start;
+        return Number(activity.timestamps.start);
     }
     return null;
 }
