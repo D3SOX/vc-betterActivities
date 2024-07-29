@@ -12,7 +12,7 @@ import ErrorBoundary from "@components/ErrorBoundary";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
 import { findByPropsLazy, findComponentByCodeLazy, findStoreLazy } from "@webpack";
-import { PresenceStore, React, Tooltip, useEffect, useState, useStateFromStores } from "@webpack/common";
+import { PresenceStore, React, Tooltip, useEffect, useMemo, useState, useStateFromStores } from "@webpack/common";
 import { User } from "discord-types/general";
 
 import { Caret } from "./components/Caret";
@@ -126,6 +126,15 @@ const ActivityTooltip = ({ activity, application, user }: Readonly<{ activity: A
         </ErrorBoundary>
     );
 };
+
+function getActivityApplication({ application_id }: Activity) {
+    if (!application_id) return undefined;
+    let application = ApplicationStore.getApplication(application_id);
+    if (!application && fetchedApplications.has(application_id)) {
+        application = fetchedApplications.get(application_id) ?? null;
+    }
+    return application ?? undefined;
+}
 
 function getApplicationIcons(activities: Activity[], preferSmall = false) {
     const applicationIcons: ApplicationIcon[] = [];
@@ -325,14 +334,31 @@ export default definePlugin({
 
         if (!activities.length) return null;
 
+        // we use these for other activities, it would be better to somehow get the corresponding activity props
+        const generalProps = useMemo(() => Object.keys(props).reduce((acc, key) => {
+            // exclude activity specific props to prevent copying them to all activities (e.g. buttons)
+            if (key !== "renderActions" && key !== "application") acc[key] = props[key];
+            return acc;
+        }, {}), [props]);
+
         if (settings.store.allActivitiesStyle === "carousel") {
             return (
                 <div style={{ display: "flex", flexDirection: "column" }}>
-                    <ActivityView
-                        activity={currentActivity}
-                        user={user}
-                        {...props}
-                    />
+                    {currentActivity?.id === activity.id ? (
+                        <ActivityView
+                            activity={currentActivity}
+                            user={user}
+                            {...props}
+                        />
+                    ) : (
+                        <ActivityView
+                            activity={currentActivity}
+                            user={user}
+                            // fetch optional application
+                            application={getActivityApplication(currentActivity!)}
+                            {...generalProps}
+                        />
+                    )}
                     {activities.length > 1 &&
                         <div
                             className={cl("controls")}
@@ -401,14 +427,22 @@ export default definePlugin({
                         gap: "5px",
                     }}
                 >
-                    {activities.map((activity, index) => (
-                        <ActivityView
-                            key={index}
-                            activity={activity}
-                            user={user}
-                            {...props}
-                        />
-                    ))}
+                    {activities.map((activity, index) =>
+                        index === 0 ? (
+                            <ActivityView
+                                key={index}
+                                activity={activity}
+                                user={user}
+                                {...props}
+                            />) : (
+                            <ActivityView
+                                key={index}
+                                activity={activity}
+                                user={user}
+                                application={getActivityApplication(activity)}
+                                {...generalProps}
+                            />
+                        ))}
                 </div>
             );
         }
