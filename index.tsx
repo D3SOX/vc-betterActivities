@@ -332,8 +332,6 @@ export default definePlugin({
                 setCurrentActivity(activities[0]);
         }, [activities]);
 
-        if (!activities.length) return null;
-
         // we use these for other activities, it would be better to somehow get the corresponding activity props
         const generalProps = useMemo(() => Object.keys(props).reduce((acc, key) => {
             // exclude activity specific props to prevent copying them to all activities (e.g. buttons)
@@ -341,6 +339,8 @@ export default definePlugin({
             return acc;
         }, {}), [props]);
 
+        if (!activities.length) return null;
+        
         if (settings.store.allActivitiesStyle === "carousel") {
             return (
                 <div style={{ display: "flex", flexDirection: "column" }}>
