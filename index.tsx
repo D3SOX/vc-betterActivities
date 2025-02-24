@@ -464,10 +464,10 @@ export default definePlugin({
     patches: [
         {
             // Patch activity icons
-            find: ".getHangStatusActivity():null!",
+            find: "\"activity-status-web",
             replacement: {
-                match: /null!=(\i)&&\i.some\(\i=>\(0,\i.\i\)\(\i,\i\)\)\?/,
-                replace: "$self.patchActivityList(e),false?"
+                match: /(?<=hasQuest:\i\}=(\i).*?)\(null==\i?\?void 0:\i.some\(\i\.\i\)\)/,
+                replace: "$self.patchActivityList($1),false"
             },
             predicate: () => settings.store.memberList,
         },
