@@ -462,6 +462,14 @@ export default definePlugin({
     },
 
     patches: [
+         {
+            // Disable the green icons to bypass breaking patches
+            find: "activity_status_cleanup",
+            replacement: {
+                match: /activityStatusCleanupEnabled:!0/,
+                replace: "activityStatusCleanupEnabled:!1",
+            }
+        },
         {
             // Patch activity icons
             find: "\"activity-status-web",
