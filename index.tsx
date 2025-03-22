@@ -473,7 +473,6 @@ export default definePlugin({
         },
         {
             // Show all activities in the user popout/sidebar
-            // still broken btw
             find: '"UserProfilePopoutBody"',
             replacement: {
                 match: /(?<=user:(\i).*?\i\.id\)\}\)\),(\i).*?)\(0,\i\.jsx\).{0,100}\i\.activity\}\)/,
