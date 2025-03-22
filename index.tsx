@@ -46,12 +46,6 @@ const settings = definePluginSettings({
         default: true,
         restartNeeded: false,
     },
-    showAppDescriptions: {
-        type: OptionType.BOOLEAN,
-        description: "Show application descriptions in the activity tooltip",
-        default: true,
-        restartNeeded: false,
-    },
     divider: {
         type: OptionType.COMPONENT,
         description: "",
