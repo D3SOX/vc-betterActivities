@@ -466,7 +466,7 @@ export default definePlugin({
             // Patch activity icons
             find: '"activity-status-web"',
             replacement: {
-                match: /(?<=}=(\i).*?{}\))\]/,
+                match: /(?<=hideTooltip:.{0,4}}=(\i).*?{}\))\]/,
                 replace: ",$self.patchActivityList($1)]"
             },
             predicate: () => settings.store.memberList,
