@@ -46,12 +46,6 @@ const settings = definePluginSettings({
         default: true,
         restartNeeded: false,
     },
-    showAppDescriptions: {
-        type: OptionType.BOOLEAN,
-        description: "Show application descriptions in the activity tooltip",
-        default: true,
-        restartNeeded: false,
-    },
     divider: {
         type: OptionType.COMPONENT,
         description: "",
@@ -463,19 +457,11 @@ export default definePlugin({
 
     patches: [
         {
-            // Disable the green icons to bypass breaking patches
-            find: "activity_status_cleanup",
-            replacement: {
-                match: /activityStatusCleanupEnabled:!0/,
-                replace: "activityStatusCleanupEnabled:!1",
-            }
-        },
-        {
             // Patch activity icons
-            find: "\"activity-status-web",
+            find: '"activity-status-web"',
             replacement: {
-                match: /(?<=hasQuest:\i\}=(\i).*?)\(null==\i?\?void 0:\i.some\(\i\.\i\)\)/,
-                replace: "$self.patchActivityList($1),false"
+                match: /(?<=hideTooltip:.{0,4}}=(\i).*?{}\))\]/,
+                replace: ",$self.patchActivityList($1)]"
             },
             predicate: () => settings.store.memberList,
         },
