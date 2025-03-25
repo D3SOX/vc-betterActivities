@@ -245,10 +245,10 @@ export default definePlugin({
 
     settings,
 
-    patchActivityList: ({ activities, user }: { activities: Activity[], user: User; }): JSX.Element | null => {
+    patchActivityList: ({ activities, user, hideTooltip }: { activities: Activity[], user: User, hideTooltip: boolean; }): JSX.Element | null => {
         const icons: ActivityListIcon[] = [];
 
-        if (user.bot) return null;
+        if (user.bot || hideTooltip) return null;
 
         const applicationIcons = getApplicationIcons(activities);
         if (applicationIcons.length) {
