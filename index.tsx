@@ -382,8 +382,11 @@ export default definePlugin({
                                     onMouseLeave={onMouseLeave}
                                     onClick={() => {
                                         const index = activities.indexOf(currentActivity!);
-                                        if (index - 1 >= 0)
+                                        if (index - 1 >= 0) {
                                             setCurrentActivity(activities[index - 1]);
+                                        } else {
+                                            setCurrentActivity(activities[activities.length - 1]);
+                                        }
                                     }}
                                 >
                                     <Caret
@@ -410,8 +413,11 @@ export default definePlugin({
                                     onMouseLeave={onMouseLeave}
                                     onClick={() => {
                                         const index = activities.indexOf(currentActivity!);
-                                        if (index + 1 < activities.length)
+                                        if (index + 1 < activities.length) {
                                             setCurrentActivity(activities[index + 1]);
+                                        } else {
+                                            setCurrentActivity(activities[0]);
+                                        }
                                     }}
                                 >
                                     <Caret
