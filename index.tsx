@@ -479,9 +479,9 @@ export default definePlugin({
             // Show all activities in the user popout/sidebar
             find: '"UserProfilePopoutBody"',
             replacement: {
-                    match: /(?<=(\i)\.id\)\}\)\),(\i).*?)\(0,.{0,100}\i\.activity\}\)/,
-                    replace: "$self.showAllActivitiesComponent({ activity: $2, user: $1 })"
-                },
+                match: /(?<=(\i)\.id\)\}\)\),(\i).*?)\(0,.{0,100}\i\.activity\}\)/,
+                replace: "$self.showAllActivitiesComponent({ activity: $2, user: $1 })"
+            },
             predicate: () => settings.store.userPopout
         },
     ],
