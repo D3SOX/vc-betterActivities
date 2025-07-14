@@ -41,11 +41,10 @@ export default definePlugin({
                 replace: ",$self.patchActivityList($1)]"
             },
             predicate: () => settings.store.memberList,
-            all: true
         },
         {
             // Show all activities in the user popout/sidebar
-            find: '"UserProfilePopoutBody"',
+            find: "hasAvatarForGuild(null",
             replacement: {
                 match: /(?<=(\i)\.id\)\}\)\),(\i).*?)\(0,.{0,100}\i\.id,onClose:\i\}\)/,
                 replace: "$self.showAllActivitiesComponent({ activity: $2, user: $1 })"
