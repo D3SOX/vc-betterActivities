@@ -36,18 +36,25 @@ export default definePlugin({
         {
             // Patch activity icons
             find: "isBlockedOrIgnored(null",
-            replacement: {
-                match: /(?<=hideTooltip:.{0,4}}=(\i).*?{}\))\]/,
-                replace: ",$self.patchActivityList($1)]"
-            },
-            predicate: () => settings.store.memberList,
+            replacement: [
+                {
+                    match: /(?<=className:\i,children:\[).*?(?=\i\(\),\i&&)/,
+                    replace: "",
+                    predicate: () => settings.store.removeGameActivityStatus,
+                },
+                {
+                    match: /(?<=hideTooltip:.{0,4}}=(\i).*?{}\))\]/,
+                    replace: ",$self.patchActivityList($1)]",
+                    predicate: () => settings.store.memberList,
+                }
+            ],
             all: true
         },
         {
             // Show all activities in the user popout/sidebar
             find: '"UserProfilePopoutBody"',
             replacement: {
-                match: /(?<=(\i)\.id\)\}\)\),(\i).*?)\(0,.{0,100}\i\.id,onClose:\i\}\)/,
+                match: /(?<=(\i)\.id\)\}\)\),(\i).*?,)\i\?.{0,250}onClose:\i\}\)/,
                 replace: "$self.showAllActivitiesComponent({ activity: $2, user: $1 })"
             },
             predicate: () => settings.store.userPopout
