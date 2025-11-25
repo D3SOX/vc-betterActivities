@@ -23,7 +23,7 @@ export interface Activity {
     created_at: number;
     id: string;
     name: string;
-    type: number;
+    type: ActivityType;
     emoji?: {
         animated: boolean;
         id: string;
