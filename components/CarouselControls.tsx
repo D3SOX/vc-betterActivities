@@ -43,12 +43,12 @@ export function CarouselControls({ activities, currentActivity, onActivityChange
                 </span>;
             }}</Tooltip>
 
-            <div className="carousel">
+            <div className={cl("controls-carousel")}>
                 {activities.map((activity, index) => (
                     <div
                         key={"dot--" + index}
                         onClick={() => onActivityChange(activity)}
-                        className={`dot ${currentActivity === activity ? "selected" : ""}`} />
+                        className={cl("controls-dot", currentActivity === activity && "controls-selected")} />
                 ))}
             </div>
 

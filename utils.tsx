@@ -4,11 +4,12 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { classNameFactory } from "@api/Styles";
+import { classNameFactory } from "@utils/css";
+import { Activity, Application } from "@vencord/discord-types";
 import { findByPropsLazy, findComponentByCodeLazy, findStoreLazy } from "@webpack";
 
 import { settings } from "./settings";
-import { Activity, ActivityViewProps, Application, ApplicationIcon } from "./types";
+import { ActivityViewProps, ApplicationIcon } from "./types";
 
 const ApplicationStore: {
     getApplication: (id: string) => Application | null;

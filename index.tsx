@@ -19,12 +19,7 @@ migratePluginSettings("BetterActivities", "MemberListActivities");
 export default definePlugin({
     name: "BetterActivities",
     description: "Shows activity icons in the member list and allows showing all activities",
-    authors: [
-        Devs.D3SOX,
-        Devs.Arjix,
-        Devs.AutumnVN,
-        { name: "thororen", id: 848339671629299742n }
-    ],
+    authors: [Devs.D3SOX, Devs.Arjix, Devs.AutumnVN, Devs.thororen],
     tags: ["activity"],
 
     settings,
@@ -55,7 +50,7 @@ export default definePlugin({
             // Show all activities in the user popout/sidebar
             find: '"UserProfilePopoutBody"',
             replacement: {
-                match: /((\i)=.{0,10}(\i)\.id\).*?,)\i\?.{0,250}onClose:\i\}\)/,
+                match: /((\i)=.{0,10}(\i)\.id\).*?,onInteraction:\i\}\),).{0,250}onClose:\i\}\)/,
                 replace: "$1$self.showAllActivitiesComponent({ activity: $2, user: $3 })"
             },
             predicate: () => settings.store.userPopout
