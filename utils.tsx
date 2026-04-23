@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { classNameFactory } from "@api/Styles";
+import { classNameFactory } from "@utils/css";
 import { Activity, Application } from "@vencord/discord-types";
 import { findByPropsLazy, findComponentByCodeLazy, findStoreLazy } from "@webpack";
 
@@ -40,7 +40,7 @@ export function getActivityApplication(activity: Activity | null) {
 
 export function getApplicationIcons(activities: Activity[], preferSmall = false): ApplicationIcon[] {
     const applicationIcons: ApplicationIcon[] = [];
-    const applications = activities.filter(activity => activity.application_id || activity.platform || activity?.id?.startsWith("spotify:"));
+    const applications = activities.filter(activity => activity != null && (activity.application_id || activity.platform || activity.id?.startsWith("spotify:")));
 
     for (const activity of applications) {
         const { assets, application_id, platform, id } = activity;

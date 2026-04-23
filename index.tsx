@@ -20,21 +20,22 @@ export default definePlugin({
     name: "BetterActivities",
     description: "Shows activity icons in the member list and allows showing all activities",
     authors: [Devs.D3SOX, Devs.Arjix, Devs.AutumnVN, Devs.thororen],
-    tags: ["activity"],
-
+    tags: ["Activity"],
     settings,
-
     patchActivityList,
-
     showAllActivitiesComponent,
-
     patches: [
         {
             // Patch activity icons
             find: '"ActivityStatus"),',
             replacement: [
                 {
-                    match: /(?<=className:\i,children:\[).*?(?=\i\(\),\i&&)/g,
+                    match: /(?<=className:\i,children:\[).*?(?=\i\(\),\i&&)/,
+                    replace: "",
+                    predicate: () => settings.store.removeGameActivityStatus,
+                },
+                {
+                    match: /(?<=className:\i,children:\[\i\(\),)null.*?tooltipClassName:\i\}\),/,
                     replace: "",
                     predicate: () => settings.store.removeGameActivityStatus,
                 },
